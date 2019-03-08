@@ -12,18 +12,31 @@ export default class CalendarMonth extends React.Component {
     this.props.onPress(this.props.month, day);
   };
 
+  appearanceForDay = (day) => {
+    if (this.props.filledDays.includes(day)) {
+      return CalendarDay.appearances.filled;
+    }
+    const today = new Date();
+    const date = new Date(util.currentYear(), this.props.month - 1, day);
+    if (today.getMonth() == date.getMonth() && today.getDate() == date.getDate()) {
+      return CalendarDay.appearances.today;
+    } else if (date < today) {
+      return CalendarDay.appearances.past;
+    } else {
+      return CalendarDay.appearances.future;
+    }
+  };
+
   render() {
     var days = [];
-    const today = new Date();
-    const year = today.getFullYear();
-    const daysInMonth = util.daysInMonth(this.props.month, year);
+    const daysInMonth = util.daysInMonth(this.props.month, util.currentYear());
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(
         <CalendarDay
           key={day}
           day={day}
-          month={this.props.month}
           onPress={this.handleDayPress}
+          appearance={this.appearanceForDay(day)}
           style={styles.day} />
       );
     }

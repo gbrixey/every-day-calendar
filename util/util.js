@@ -11,5 +11,9 @@ export default {
       default:
         return 31;
     }
+  },
+  currentYear() {
+    const today = new Date();
+    return today.getFullYear();
   }
 };
